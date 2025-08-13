@@ -1,54 +1,215 @@
+/* =====================
+   Fonte, cores e base
+===================== */
+:root{
+  --neon: #0f0;
+  --accent: #f39c12;
+}
+*{box-sizing:border-box}
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-header {
-    background-color: #1a1a1a;
-    color: #fff;
-    text-align: center;
-    padding: 2rem 0;
-}
-
-nav {
-    background-color: #333;
-}
-
-nav ul {
-    display: flex;
-    justify-content: center;
-    list-style: none;
+    background-color: transparent; /* vídeo atrás */
+    color: var(--neon);
     margin: 0;
     padding: 0;
 }
 
-nav li {
-    margin: 0 1rem;
+/* =====================
+   Vídeo de fundo
+===================== */
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
 }
 
-nav a {
-    color: #fff;
-    text-decoration: none;
+/* =====================
+   Header
+===================== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    background-color: rgba(0,0,0,0.28);
+    color: var(--neon);
+    text-align: center;
+    padding: 40px 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
+}
+
+/* =====================
+   Navbar
+===================== */
+.navbar, .navbar-dark .navbar-nav .nav-link {
+    position: relative;
+    z-index: 25;
+    font-weight: bold;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--neon);
+    transition: color .25s;
+}
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: var(--accent);
+}
+.navbar-brand {
+    color: var(--neon) !important;
+    text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
     font-weight: bold;
 }
 
-section {
-    padding: 2rem;
-    max-width: 800px;
-    margin: auto;
-    background-color: #fff;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+/* =====================
+   Abas (containers)
+   - ocultas por padrão; JS mostra a ativa
+   - fundo transparente sobre o vídeo
+===================== */
+.aba {
+    position: relative;
+    z-index: 15;                    /* acima do vídeo, abaixo do header */
+    background-color: rgba(0,0,0,0.18);
+    padding: 20px;
+    border-radius: 10px;
+    color: var(--neon);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    text-shadow: 0 0 3px var(--neon);
+    margin: 200px auto 20px auto;   /* ajusta conforme tamanho do header */
+    max-width: 1000px;
+    display: none;                   /* controlado pelo JS */
 }
 
+/* Garante que conteúdo estático dentro das abas não seja afetado por fades */
+.aba > *:not(.card) {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =====================
+   GIF da aba Sobre
+===================== */
+#sobre .col-md-4 img {
+    width: 320px;
+    height: auto;
+    display: block;
+    margin: 0 auto 30px auto;
+}
+#sobre .col-md-8 { padding-left: 30px; }
+@media (max-width:767px){ #sobre .col-md-8{ padding-left:0; margin-top:20px;} }
+
+/* =====================
+   Cards (comportamento)
+   - .card: visível por padrão (para Sobre/Contato)
+   - apenas #projetos .card inicia invisível e usa fade-in
+===================== */
+.card {
+    background: rgba(0,0,0,0.22);
+    border-radius: 8px;
+    border: 1px solid var(--neon);
+    color: var(--neon);
+    transition: transform .28s ease, box-shadow .28s ease, background-color .28s ease;
+    cursor: default;               /* padrão: não parecer interativo */
+    opacity: 1;                    /* visível por padrão */
+    transform: translateY(0);
+    text-shadow: 0 0 3px var(--neon);
+}
+
+/* Só os cards dentro de PROJETOS começam escondidos e animam */
+#projetos .card {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .42s ease, transform .42s ease;
+    cursor: pointer;               /* projetos são interativos */
+}
+#projetos .card.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =====================
+   Hover behavior:
+   - neutraliza movimento em todos os cards
+   - reativa efeito visual APENAS para cards dentro de #projetos
+===================== */
+/* neutraliza hover global (cards estáticos não se movem) */
+.card:hover {
+  transform: none !important;
+  transition: none !important;
+  box-shadow: 0 6px 14px rgba(0,255,0,0.06);
+  background-color: rgba(0,0,0,0.30);
+  cursor: default !important;
+}
+
+/* efeito somente para cards da aba Projetos */
+#projetos .card:hover {
+  transform: translateY(-6px) rotate(-1deg) !important;
+  transition: transform .28s ease, box-shadow .28s ease !important;
+  box-shadow: 0 10px 20px rgba(0,255,0,0.12) !important;
+  background-color: rgba(0,0,0,0.35) !important;
+  cursor: pointer !important;
+}
+
+/* =====================
+   Helpers: força cor/visibilidade dentro da aba
+===================== */
+.aba, .aba * {
+    color: var(--neon) !important;
+}
+
+/* evita que bootstrap normalize esconda algo */
+.aba .card-body,
+.aba p,
+.aba h3, .aba h5, .aba a {
+    color: var(--neon) !important;
+}
+
+/* =====================
+   Botão de curiosidade e badges
+===================== */
+#btn-interacao {
+    font-weight: bold;
+    background-color: rgba(243,156,18,0.85);
+    color: #000;
+    border: none;
+    cursor: pointer;
+}
+.badge {
+    font-size: .8rem;
+    background-color: rgba(243,156,18,0.85);
+    color: #000;
+}
+
+/* =====================
+   Footer e geral
+===================== */
 footer {
+    position: relative;
+    z-index: 15;
+    background-color: rgba(0,0,0,0.14);
+    color: var(--neon);
     text-align: center;
-    padding: 1rem;
-    background-color: #1a1a1a;
-    color: #fff;
+    padding: 15px 10px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
+}
+
+main { padding-top: 160px; }
+
+/* =====================
+   Pequenos ajustes responsivos
+===================== */
+@media (max-width: 992px){
+  .aba { margin: 140px 12px 20px 12px; }
+  .card { margin-bottom: 12px; }
 }

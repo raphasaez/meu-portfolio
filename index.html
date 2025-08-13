@@ -1,52 +1,188 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeas - Cybersecurity Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zeas - Cybersecurity Portfolio</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Seu CSS -->
+  <link rel="stylesheet" href="style.css"/>
 </head>
-<body>
-    <header>
-        <h1>Zeas</h1>
-        <h2>Profissional de Cybersegurança</h2>
-    </header>
+<body class="bg-light">
 
-    <nav>
-        <ul>
-            <li><a href="#sobre">Sobre</a></li>
-            <li><a href="#projetos">Projetos</a></li>
-            <li><a href="#contato">Contato</a></li>
+  <!-- Vídeos de fundo -->
+  <video id="video-sobre" autoplay muted loop preload="auto" class="video-bg" style="display:none;">
+    <source src="imagens/video-sobre.mp4" type="video/mp4">
+  </video>
+
+  <video id="video-projetos" autoplay muted loop preload="auto" class="video-bg" style="display:none;">
+    <source src="imagens/video-projetos.mp4" type="video/mp4">
+  </video>
+
+  <video id="video-contato" autoplay muted loop preload="auto" class="video-bg" style="display:none;">
+    <source src="imagens/video-contato.mp4" type="video/mp4">
+  </video>
+
+  <!-- Header -->
+  <header class="py-5 text-center text-white">
+    <div class="container">
+      <h1 class="display-5 fw-bold mb-1">zeassec</h1>
+      <p class="lead mb-0">Profissional de Cybersegurança</p>
+    </div>
+  </header>
+
+  <!-- Navbar SPA -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Portfólio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link aba-link active" data-target="sobre" href="#">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link aba-link" data-target="projetos" href="#">Projetos</a></li>
+          <li class="nav-item"><a class="nav-link aba-link" data-target="contato" href="#">Contato</a></li>
         </ul>
-    </nav>
+      </div>
+    </div>
+  </nav>
 
-    <section id="sobre">
-        <h3>Sobre mim</h3>
-        <p>Olá! Sou Zeas, entusiasta de cibersegurança, pentest e desenvolvimento seguro.  
-        Gosto de explorar vulnerabilidades de forma ética e documentar soluções.</p>
+  <!-- Main SPA -->
+  <main class="py-4">
+
+    <!-- Sobre mim -->
+    <section id="sobre" class="container mb-4 aba">
+      <div class="card shadow-sm p-3">
+        <div class="row align-items-center">
+          <!-- Foto -->
+          <div class="col-md-4 text-center mb-3 mb-md-0">
+            <img src="imagens/seu-gif.gif" alt="Zeas" class="img-fluid">
+          </div>
+
+          <!-- Conteúdo principal -->
+          <div class="col-md-8">
+            <h3 class="card-title mb-3">Olá, sou Raphael</h3>
+            <p>Sou entusiasta de cibersegurança e pentest, aplicando conhecimentos em segurança web, mobile e automação. 
+            Iniciei minha trajetória com labs de segurança e wargames, documentando soluções e aplicando testes éticos. 
+            Hoje, auxilio empresas e projetos a identificar vulnerabilidades, proteger dados críticos e melhorar processos de segurança.
+            Além de atuar em plataformas de Bug Bounty, reportando falhas de forma responsável e contribuindo para ambientes mais seguros.</p>
+
+            <!-- Serviços -->
+            <h5 class="mt-4">Serviços que posso prestar</h5>
+            <ul>
+              <li>Teste de invasão (Pentest) em aplicações web e mobile</li>
+              <li>Consultoria em segurança e análise de vulnerabilidades</li>
+              <li>Auditoria de sistemas e documentação de processos</li>
+              <li>Treinamentos e workshops em cibersegurança</li>
+              <li>Automação de tarefas de segurança com scripts</li>
+              <li><strong>Web:</strong> Pentest, auditoria de segurança, análise de vulnerabilidades, testes de OWASP 10.</li>
+              <li><strong>Redes & Infraestrutura:</strong> Análise e hardening de redes, IDS/IPS, auditoria de infraestrutura, configuração de firewalls e VPNs, segurança em cloud e virtualização.</li>
+              <li><strong>Administração de Ferramentas Corporativas:</strong> Gestão segura de sistemas internos, automação de processos, monitoramento e auditoria de logs.</li>
+              <li><strong>Automação & Scripting:</strong> Scripts para testes, coleta de dados e relatórios automáticos, ferramentas personalizadas para auditoria e pentest.</li>
+            </ul>
+
+            <!-- Habilidades -->
+            <h5 class="mt-4">Níveis de habilidade</h5>
+            <div class="mb-2">
+              <label>Pentest Web</label>
+              <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" data-target="90"></div>
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label>Segurança de Redes</label>
+              <div class="progress">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 0%" data-target="70"></div>
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label>Documentação & Análise</label>
+              <div class="progress">   
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" data-target="90"></div>
+              </div>
+            </div>  
+
+            <div class="mb-2">
+              <label>Automação & Scripting</label>
+              <div class="progress">   
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" data-target="65"></div>
+              </div>
+            </div>  
+
+            <div class="mb-2">
+              <label>Ferramentas Corporativas</label>
+              <div class="progress">   
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" data-target="50"></div>
+              </div>
+            </div>  
+
+            <div class="mb-2">
+              <label>Desenvolvimento</label>
+              <div class="progress">   
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 0%" data-target="35"></div>
+              </div>
+            </div>
+
+            <!-- Comentário final da aba Sobre -->
+            <p style="margin-top: 20px; font-size: 0.9rem; color: #0f0; text-shadow: 0 0 3px #0f0; text-align: center;">
+              📄 Pra formação e certificados oficiais, faça o download do PDF na aba 
+              <a href="#" class="aba-link" data-target="contato" style="color: #0f0; text-decoration: underline;">Contato</a>.
+            </p>
+          </div> <!-- fim col-md-8 -->
+        </div> <!-- fim row -->
+      </div> <!-- fim card -->
     </section>
 
-    <section id="projetos">
-        <h3>Projetos</h3>
-        <ul>
-            <li>RAT Android com Accessibility Service (Aprendizado)</li>
-            <li>Exploração de XXE, SSRF e CORS em labs educativos</li>
-            <li>Documentação de wargames OverTheWire no GitHub</li>
-        </ul>
-        <button id="btn-interacao">Clique para ver curiosidade</button>
-        <p id="interacao-text"></p>
+    <!-- Projetos -->
+    <section id="projetos" class="container mb-4 aba" style="display:none;">
+      <h3 class="mb-3">Projetos</h3>
+      <div class="row g-3" id="lista-projetos">
+        <!-- Cards de projetos serão inseridos aqui via JS -->
+      </div>
     </section>
 
-    <section id="contato">
-        <h3>Contato</h3>
-        <p>Email: raphasaez_music@hotmail.com</p>
-        <p>GitHub: <a href="https://github.com/raphasaez" target="_blank">raphasaez</a></p>
+    <!-- Contato -->
+    <section id="contato" class="container mb-4 aba" style="display:none;">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Contato</h3>
+          <p class="mb-2">
+            📩 <strong>Email:</strong> 
+            <a href="mailto:raphasaez_music@hotmail.com" target="_blank">raphasaez_music@hotmail.com</a>
+          </p>
+          <p class="mb-2">
+            💻 <strong>GitHub:</strong> 
+            <a href="https://github.com/raphasaez" target="_blank">github.com/raphasaez</a>
+          </p>
+          <p class="mb-2">
+            🔗 <strong>LinkedIn:</strong> 
+            <a href="https://linkedin.com/in/raphael-saez-0140aa272" target="_blank">linkedin.com/in/seuusuario</a>
+          </p>
+          <p class="mb-3">
+            📄 <strong>Currículo:</strong> 
+            <a href="arquivos/curriculo.pdf" download>Download PDF</a>
+          </p>
+          <p style="font-size: 0.9rem; color: #0f0; text-shadow: 0 0 3px #0f0;">
+            Para formação e certificados oficiais, consulte o PDF do currículo.
+          </p>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <footer>
-        <p>&copy; 2025 Zeas. Todos os direitos reservados.</p>
-    </footer>
+  <!-- Footer -->
+  <footer class="text-center py-3 text-white">
+    <small>&copy; 2025 Zeas. Todos os direitos reservados.</small>
+  </footer>
 
-    <script src="script.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Seu JS -->
+  <script src="script.js"></script>
 </body>
 </html>
