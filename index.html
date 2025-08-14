@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -133,6 +134,7 @@
               📄 Pra formação e certificados oficiais, faça o download do PDF na aba 
               <a href="#" class="aba-link" data-target="contato" style="color: #0f0; text-decoration: underline;">Contato</a>.
             </p>
+
           </div> <!-- fim col-md-8 -->
         </div> <!-- fim row -->
       </div> <!-- fim card -->
@@ -175,9 +177,38 @@
     </section>
   </main>
 
+  <!-- Hacker News floating widget (canto direito) -->
+  <div id="hn-container" class="hn-container collapsed" aria-hidden="true">
+    <div class="hn-header">
+      <button id="hn-toggle" class="btn btn-sm btn-outline-light" title="Abrir/fechar Hacker News">📰</button>
+      <span class="hn-title">Hacker News</span>
+    </div>
+    <div id="hn-content" class="hn-content">
+      <ul id="hn-list" class="hn-list"></ul>
+      <div id="hn-loading" class="hn-loading">Carregando...</div>
+      <div class="hn-footer"><small>font: Hacker News</small></div>
+    </div>
+  </div>
+
+<!-- Curiosidades TI floating widget -->
+<div id="curiosidade-container" class="hn-container collapsed" aria-hidden="true" style="left: 20px;">
+  <div class="hn-header">
+    <button id="curiosidade-toggle" class="btn btn-sm btn-outline-light" title="Abrir/fechar Curiosidades">💡</button>
+    <span class="hn-title">Curiosidades TI</span>
+  </div>
+  <div id="curiosidade-content" class="hn-content">
+    <p id="curiosidade-text">Carregando...</p>
+    <div class="d-flex justify-content-end mt-2">
+      <button id="proxima-curiosidade" class="btn btn-sm btn-success">Próxima</button>
+    </div>
+    <div class="hn-footer"><small>font: Zeas API</small></div>
+  </div>
+</div>
+
+
   <!-- Footer -->
   <footer class="text-center py-3 text-white">
-    <small>&copy; 2025 Zeas. Todos os direitos reservados.</small>
+    <small>&copy; 2025 zaessec. Todos os direitos reservados.</small>
   </footer>
 
   <!-- Bootstrap JS -->

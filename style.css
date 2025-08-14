@@ -9,7 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: transparent; /* vídeo atrás */
+    background-color: transparent;
     color: var(--neon);
     margin: 0;
     padding: 0;
@@ -71,46 +71,22 @@ header {
 
 /* =====================
    Abas (containers)
-   - ocultas por padrão; JS mostra a ativa
-   - fundo transparente sobre o vídeo
 ===================== */
 .aba {
     position: relative;
-    z-index: 15;                    /* acima do vídeo, abaixo do header */
+    z-index: 15;
     background-color: rgba(0,0,0,0.18);
     padding: 20px;
     border-radius: 10px;
     color: var(--neon);
     backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    text-shadow: 0 0 3px var(--neon);
-    margin: 200px auto 20px auto;   /* ajusta conforme tamanho do header */
+    margin: 200px auto 20px auto;
     max-width: 1000px;
-    display: none;                   /* controlado pelo JS */
-}
-
-/* Garante que conteúdo estático dentro das abas não seja afetado por fades */
-.aba > *:not(.card) {
-    opacity: 1 !important;
-    visibility: visible !important;
+    display: none;
 }
 
 /* =====================
-   GIF da aba Sobre
-===================== */
-#sobre .col-md-4 img {
-    width: 320px;
-    height: auto;
-    display: block;
-    margin: 0 auto 30px auto;
-}
-#sobre .col-md-8 { padding-left: 30px; }
-@media (max-width:767px){ #sobre .col-md-8{ padding-left:0; margin-top:20px;} }
-
-/* =====================
-   Cards (comportamento)
-   - .card: visível por padrão (para Sobre/Contato)
-   - apenas #projetos .card inicia invisível e usa fade-in
+   Cards
 ===================== */
 .card {
     background: rgba(0,0,0,0.22);
@@ -118,79 +94,102 @@ header {
     border: 1px solid var(--neon);
     color: var(--neon);
     transition: transform .28s ease, box-shadow .28s ease, background-color .28s ease;
-    cursor: default;               /* padrão: não parecer interativo */
-    opacity: 1;                    /* visível por padrão */
+    cursor: default;
+    opacity: 1;
     transform: translateY(0);
     text-shadow: 0 0 3px var(--neon);
 }
-
-/* Só os cards dentro de PROJETOS começam escondidos e animam */
 #projetos .card {
     opacity: 0;
     transform: translateY(18px);
     transition: opacity .42s ease, transform .42s ease;
-    cursor: pointer;               /* projetos são interativos */
+    cursor: pointer;
 }
 #projetos .card.fade-in {
     opacity: 1;
     transform: translateY(0);
 }
+.card:hover { transform: none !important; transition: none !important; }
 
 /* =====================
-   Hover behavior:
-   - neutraliza movimento em todos os cards
-   - reativa efeito visual APENAS para cards dentro de #projetos
+   Hacker News widget (direito)
 ===================== */
-/* neutraliza hover global (cards estáticos não se movem) */
-.card:hover {
-  transform: none !important;
-  transition: none !important;
-  box-shadow: 0 6px 14px rgba(0,255,0,0.06);
-  background-color: rgba(0,0,0,0.30);
-  cursor: default !important;
+.hn-container {
+  position: fixed;
+  top: 140px;
+  right: 20px;
+  width: 320px;
+  max-height: 60vh;
+  z-index: 30;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid var(--neon);
+  border-radius: 10px;
+  padding: 8px;
+  color: var(--neon);
+  display: flex;
+  flex-direction: column;
+  transition: transform .22s ease, opacity .22s ease;
+}
+.hn-container.collapsed .hn-content { display: none; opacity: 0; }
+.hn-header { display:flex; gap:8px; align-items:center; }
+.hn-header .hn-title { font-weight:600; color:var(--accent); }
+.hn-content { overflow-y: auto; padding-top:8px; }
+.hn-list { list-style:none; padding-left:0; margin:0; }
+.hn-list li { padding:6px 4px; border-bottom: 1px solid rgba(0,255,0,0.06); }
+.hn-list li a { color: var(--neon); text-decoration: none; font-weight:600; display:block; }
+.hn-list li .meta { font-size: .8rem; color: rgba(0,255,0,0.6); margin-top:4px; }
+.hn-loading { color: var(--neon); padding: 10px 4px; }
+.hn-footer { text-align:center; padding:6px 0; font-size: .75rem; color: rgba(0,255,0,0.6); }
+
+/* Widget Curiosidades estilo Hacker News */
+#curiosidade-container {
+  position: fixed;
+  top: 140px;
+  left: 20px;
+  width: 280px;
+  max-height: 60vh;
+  z-index: 30;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid var(--neon);
+  border-radius: 10px;
+  padding: 8px;
+  color: var(--neon);
+  text-shadow: 0 0 3px var(--neon);
+  display: flex;
+  flex-direction: column;
+  transition: transform .22s ease, opacity .22s ease;
 }
 
-/* efeito somente para cards da aba Projetos */
-#projetos .card:hover {
-  transform: translateY(-6px) rotate(-1deg) !important;
-  transition: transform .28s ease, box-shadow .28s ease !important;
-  box-shadow: 0 10px 20px rgba(0,255,0,0.12) !important;
-  background-color: rgba(0,0,0,0.35) !important;
-  cursor: pointer !important;
+/* collapsed state */
+#curiosidade-container.collapsed .hn-content { display: none; opacity: 0; }
+
+#curiosidade-container .hn-header {
+  display:flex;
+  gap:8px;
+  align-items:center;
 }
+
+#curiosidade-container .hn-title {
+  font-weight:600;
+  color: var(--accent);
+  text-shadow: 0 0 5px var(--accent);
+}
+
+#curiosidade-container .hn-content {
+  overflow-y: auto;
+  padding-top:8px;
+}
+
+#curiosidade-container .hn-footer {
+  text-align:center;
+  padding:6px 0;
+  font-size: .75rem;
+  color: rgba(0,255,0,0.6);
+}
+
 
 /* =====================
-   Helpers: força cor/visibilidade dentro da aba
-===================== */
-.aba, .aba * {
-    color: var(--neon) !important;
-}
-
-/* evita que bootstrap normalize esconda algo */
-.aba .card-body,
-.aba p,
-.aba h3, .aba h5, .aba a {
-    color: var(--neon) !important;
-}
-
-/* =====================
-   Botão de curiosidade e badges
-===================== */
-#btn-interacao {
-    font-weight: bold;
-    background-color: rgba(243,156,18,0.85);
-    color: #000;
-    border: none;
-    cursor: pointer;
-}
-.badge {
-    font-size: .8rem;
-    background-color: rgba(243,156,18,0.85);
-    color: #000;
-}
-
-/* =====================
-   Footer e geral
+   Footer
 ===================== */
 footer {
     position: relative;
@@ -200,16 +199,5 @@ footer {
     text-align: center;
     padding: 15px 10px;
     backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
 }
-
 main { padding-top: 160px; }
-
-/* =====================
-   Pequenos ajustes responsivos
-===================== */
-@media (max-width: 992px){
-  .aba { margin: 140px 12px 20px 12px; }
-  .card { margin-bottom: 12px; }
-}
