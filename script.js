@@ -1,3 +1,4 @@
+// script.js (versão reforçada)
 document.addEventListener('DOMContentLoaded', () => {
   // --- Seletores ---
   const abaLinks = document.querySelectorAll('.aba-link');
@@ -11,7 +12,42 @@ document.addEventListener('DOMContentLoaded', () => {
   let projetosCarregados = false;
   let hnCarregado = false;
 
-  // Atualiza vídeo
+  // ========= Helpers de segurança =========
+  // Escapa HTML para texto seguro
+  function escapeHtml(str){
+    return String(str ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#39;');
+  }
+
+  // Força href seguro: só http/https; senão, usa fallback
+  function safeHref(url, fallback){
+    try {
+      const u = new URL(url);
+      if (u.protocol === 'http:' || u.protocol === 'https:') return u.toString();
+      return fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  // fetch com timeout + checagem de status
+  async function fetchJSON(url, { timeoutMs = 8000, ...opts } = {}){
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
+    try{
+      const resp = await fetch(url, { signal: ctrl.signal, ...opts });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return await resp.json();
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  // ========= Vídeo de fundo =========
   function atualizarVideo(targetId) {
     Object.values(videos).forEach(v => {
       if (!v) return;
@@ -22,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (vAtivo) { vAtivo.style.display='block'; vAtivo.play().catch(()=>{}); }
   }
 
-  // Anima habilidades
+  // ========= Barras de habilidade =========
   function animarHabilidades() {
     const barras = document.querySelectorAll('#sobre .progress-bar');
     barras.forEach(barra => {
-      if (barra.dataset.animated==='1') return;
-      const valor = parseInt(barra.dataset.target)||0;
+      if (!barra || barra.dataset.animated==='1') return;
+      const valor = Math.max(0, Math.min(100, parseInt(barra.dataset.target)||0));
       barra.dataset.animated='1';
       let width = 0;
       barra.style.width='0%';
@@ -38,61 +74,86 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Mostrar aba
+  // ========= SPA: troca de abas =========
   function mostrarAba(targetId) {
     abas.forEach(aba=>{
+      if (!aba) return;
       aba.style.display=(aba.id===targetId)?'block':'none';
       if(aba.id===targetId){ aba.style.opacity='1'; aba.style.visibility='visible'; }
     });
-    abaLinks.forEach(link=>link.classList.toggle('active', link.dataset.target===targetId));
+    abaLinks.forEach(link=>{
+      if (!link) return;
+      link.classList.toggle('active', link.dataset.target===targetId);
+    });
     if(targetId==='sobre'){ animarHabilidades(); if(!hnCarregado) carregarNoticiasHN(); }
     if(targetId==='projetos'){ carregarProjetos(); }
     atualizarVideo(targetId);
   }
 
   abaLinks.forEach(link=>{
-    link.addEventListener('click', e=>{ e.preventDefault(); mostrarAba(link.dataset.target); });
+    link.addEventListener('click', e=>{
+      e.preventDefault();
+      const tgt = link.dataset.target;
+      if (tgt) mostrarAba(tgt);
+    });
   });
 
   mostrarAba('sobre');
 
-  // GitHub projetos
+  // ========= GitHub: listar projetos =========
   async function carregarProjetos() {
     if(projetosCarregados) return;
     projetosCarregados=true;
+
     const githubUser="raphasaez";
     const lista=document.getElementById("lista-projetos");
     if(!lista) return;
+
     lista.innerHTML='<p style="color:#f39c12;">Carregando projetos...</p>';
 
     const observer=new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
-        if(entry.isIntersecting){ entry.target.classList.add('fade-in'); observer.unobserve(entry.target);}
+        if(entry.isIntersecting){
+          entry.target.classList.add('fade-in');
+          observer.unobserve(entry.target);
+        }
       });
     },{threshold:0.12});
 
     try{
-      const resp=await fetch(`https://api.github.com/users/${githubUser}/repos?sort=updated`);
-      const data=await resp.json();
+      const data = await fetchJSON(`https://api.github.com/users/${githubUser}/repos?sort=updated`, { timeoutMs: 9000 });
+      if (!Array.isArray(data)) throw new Error('Resposta inesperada');
+
       lista.innerHTML='';
       data.forEach(repo=>{
         const wrapper=document.createElement('div');
         wrapper.className='col-md-4';
+
         const inner=document.createElement('div');
         inner.className='card h-100 shadow-sm';
-        inner.innerHTML=`<div class="card-body d-flex flex-column">
-          <h5 class="card-title">${escapeHtml(repo.name||'Sem nome')}</h5>
-          <p class="card-text">${escapeHtml(repo.description||'Sem descrição')}</p>
-          <a href="${repo.html_url}" target="_blank" class="btn btn-success mt-auto">Ver no GitHub</a>
-        </div>`;
+
+        const title = escapeHtml(repo?.name || 'Sem nome');
+        const desc  = escapeHtml(repo?.description || 'Sem descrição');
+        const href  = safeHref(repo?.html_url || '', 'https://github.com');
+
+        inner.innerHTML =
+          `<div class="card-body d-flex flex-column">
+            <h5 class="card-title">${title}</h5>
+            <p class="card-text">${desc}</p>
+            <a href="${href}" target="_blank" rel="noopener noreferrer" class="btn btn-success mt-auto">Ver no GitHub</a>
+          </div>`;
+
         wrapper.appendChild(inner);
         lista.appendChild(wrapper);
         observer.observe(inner);
       });
-    }catch(err){ lista.innerHTML='<p style="color:#f39c12;">Erro ao carregar projetos.</p>'; console.error(err); }
+    }catch(err){
+      console.error('GitHub API:', err);
+      lista.innerHTML='<p style="color:#f39c12;">Erro ao carregar projetos.</p>';
+    }
   }
 
-  // Hacker News widget
+  // ========= Hacker News widget =========
   const hnToggle=document.getElementById('hn-toggle');
   const hnContainer=document.getElementById('hn-container');
   const hnList=document.getElementById('hn-list');
@@ -108,61 +169,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function carregarNoticiasHN(){
     if(hnCarregado || !hnList || !hnLoading) return;
+
     hnLoading.style.display='block';
     hnList.innerHTML='';
+
     try{
-      const ids=await fetch('https://hacker-news.firebaseio.com/v0/topstories.json').then(r=>r.json());
-      const primeiras=Array.isArray(ids)?ids.slice(0,8):[];
-      const noticias=await Promise.all(primeiras.map(id=>fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r=>r.json()).catch(()=>null)));
+      const ids = await fetchJSON('https://hacker-news.firebaseio.com/v0/topstories.json', { timeoutMs: 9000 });
+      const primeiras = Array.isArray(ids) ? ids.slice(0,8) : [];
+
+      const noticias = await Promise.all(
+        primeiras.map(id =>
+          fetchJSON(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, { timeoutMs: 9000 })
+          .catch(()=>null)
+        )
+      );
+
       hnList.innerHTML='';
       noticias.forEach(n=>{
         if(!n) return;
         const li=document.createElement('li');
-        const url=n.url?n.url:`https://news.ycombinator.com/item?id=${n.id}`;
-        li.innerHTML=`<a href="${url}" target="_blank">${escapeHtml(n.title||'Sem título')}</a><div class="meta">👍 ${n.score||0} | 🗨️ ${n.descendants||0}</div>`;
+
+        const fallback = `https://news.ycombinator.com/item?id=${encodeURIComponent(n.id)}`;
+        const urlSegura = safeHref(n.url || '', fallback);
+        const titleSafe = escapeHtml(n.title || 'Sem título');
+        const score = Number.isFinite(n.score) ? n.score : 0;
+        const comments = Number.isFinite(n.descendants) ? n.descendants : 0;
+
+        li.innerHTML =
+          `<a href="${escapeHtml(urlSegura)}" target="_blank" rel="noopener noreferrer">${titleSafe}</a>
+           <div class="meta">👍 ${score} | 🗨️ ${comments}</div>`;
+
         hnList.appendChild(li);
       });
+
       hnLoading.style.display='none';
       hnCarregado=true;
+
       if(hnContainer.classList.contains('collapsed')){
-        hnContainer.classList.remove('collapsed'); hnContainer.setAttribute('aria-hidden','false');
+        hnContainer.classList.remove('collapsed');
+        hnContainer.setAttribute('aria-hidden','false');
       }
-    }catch(err){ console.error(err); hnList.innerHTML='<li style="color:#f39c12;">Erro ao carregar notícias.</li>'; hnLoading.style.display='none'; }
+    }catch(err){
+      console.error('HN:', err);
+      hnList.innerHTML='<li style="color:#f39c12;">Erro ao carregar notícias.</li>';
+      hnLoading.style.display='none';
+    }
   }
 
-  // Escape HTML
-  function escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;'); }
+  // ========= Widget Curiosidades TI =========
+  const curiosidadeContainer = document.getElementById('curiosidade-container');
+  const curiosidadeToggle = document.getElementById('curiosidade-toggle');
+  const curiosidadeText = document.getElementById('curiosidade-text');
+  const proximaCuriosidade = document.getElementById('proxima-curiosidade');
 
-// Widget Curiosidades TI
-const curiosidadeContainer = document.getElementById('curiosidade-container');
-const curiosidadeToggle = document.getElementById('curiosidade-toggle');
-const curiosidadeText = document.getElementById('curiosidade-text');
-const proximaCuriosidade = document.getElementById('proxima-curiosidade');
-
-curiosidadeToggle.addEventListener('click', () => {
-  curiosidadeContainer.classList.toggle('collapsed');
-});
-
-// Função para carregar curiosidade via API
-async function carregarCuriosidade() {
-  try {
-    const resp = await fetch('https://curiosidades-api.onrender.com/curiosidade');
-    const data = await resp.json();
-    curiosidadeText.style.opacity = 0;
-    setTimeout(() => {
-      curiosidadeText.innerText = data.curiosidade;
-      curiosidadeText.style.opacity = 1;
-    }, 200);
-  } catch (err) {
-    curiosidadeText.innerText = "Erro ao carregar curiosidade.";
-    console.error(err);
+  if (curiosidadeToggle && curiosidadeContainer){
+    curiosidadeToggle.addEventListener('click', () => {
+      const isCollapsed = curiosidadeContainer.classList.toggle('collapsed');
+      curiosidadeContainer.setAttribute('aria-hidden', isCollapsed ? 'true' : 'false');
+    });
   }
-}
 
-// Clique no botão "Próxima"
-proximaCuriosidade.addEventListener('click', carregarCuriosidade);
+  async function carregarCuriosidade() {
+    if (!curiosidadeText) return;
+    try {
+      const data = await fetchJSON('https://curiosidades-api.onrender.com/curiosidade', { timeoutMs: 7000 });
+      const texto = typeof data?.curiosidade === 'string' ? data.curiosidade : 'Sem conteúdo.';
+      curiosidadeText.style.opacity = 0;
+      setTimeout(() => {
+        curiosidadeText.textContent = texto; // textContent evita XSS
+        curiosidadeText.style.opacity = 1;
+      }, 180);
+    } catch (err) {
+      console.error('Curiosidades API:', err);
+      curiosidadeText.textContent = "Erro ao carregar curiosidade.";
+    }
+  }
 
-// Carrega primeira curiosidade ao abrir a página
-carregarCuriosidade();
+  if (proximaCuriosidade){
+    proximaCuriosidade.addEventListener('click', carregarCuriosidade);
+  }
+
+  // Carrega primeira curiosidade ao abrir a página
+  carregarCuriosidade();
 
 }); // DOMContentLoaded
