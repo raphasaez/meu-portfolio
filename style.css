@@ -1,123 +1,124 @@
 /* =====================
    Fonte, cores e base
 ===================== */
-:root{
+:root {
   --neon: #0f0;
   --accent: #f39c12;
 }
-*{box-sizing:border-box}
+
+* { box-sizing: border-box; }
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: transparent;
-    color: var(--neon);
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: transparent;
+  color: var(--neon);
+  margin: 0;
+  padding: 0;
 }
 
 /* =====================
    Vídeo de fundo
 ===================== */
 .video-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* =====================
    Header
 ===================== */
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 20;
-    background-color: rgba(0,0,0,0.28);
-    color: var(--neon);
-    text-align: center;
-    padding: 40px 20px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  background-color: rgba(0,0,0,0.28);
+  color: var(--neon);
+  text-align: center;
+  padding: 40px 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
 }
 
 /* =====================
    Navbar
 ===================== */
 .navbar, .navbar-dark .navbar-nav .nav-link {
-    position: relative;
-    z-index: 25;
-    font-weight: bold;
+  position: relative;
+  z-index: 25;
+  font-weight: bold;
 }
 .navbar-dark .navbar-nav .nav-link {
-    color: var(--neon);
-    transition: color .25s;
+  color: var(--neon);
+  transition: color .25s;
 }
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link.active {
-    color: var(--accent);
+  color: var(--accent);
 }
 .navbar-brand {
-    color: var(--neon) !important;
-    text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
-    font-weight: bold;
+  color: var(--neon) !important;
+  text-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
+  font-weight: bold;
 }
 
 /* =====================
    Abas (containers)
 ===================== */
 .aba {
-    position: relative;
-    z-index: 15;
-    background-color: rgba(0,0,0,0.18);
-    padding: 20px;
-    border-radius: 10px;
-    color: var(--neon);
-    backdrop-filter: blur(5px);
-    margin: 200px auto 20px auto;
-    max-width: 1000px;
-    display: none;
+  position: relative;
+  z-index: 15;
+  background-color: rgba(0,0,0,0.18);
+  padding: 20px;
+  border-radius: 10px;
+  color: var(--neon);
+  backdrop-filter: blur(5px);
+  margin: 200px auto 20px auto;
+  max-width: 1000px;
+  display: none;
 }
 
 /* =====================
    Cards
 ===================== */
 .card {
-    background: rgba(0,0,0,0.22);
-    border-radius: 8px;
-    border: 1px solid var(--neon);
-    color: var(--neon);
-    transition: transform .28s ease, box-shadow .28s ease, background-color .28s ease;
-    cursor: default;
-    opacity: 1;
-    transform: translateY(0);
-    text-shadow: 0 0 3px var(--neon);
+  background: rgba(0,0,0,0.22);
+  border-radius: 8px;
+  border: 1px solid var(--neon);
+  color: var(--neon);
+  transition: transform .28s ease, box-shadow .28s ease, background-color .28s ease;
+  cursor: default;
+  opacity: 1;
+  transform: translateY(0);
+  text-shadow: 0 0 3px var(--neon);
 }
 #projetos .card {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity .42s ease, transform .42s ease;
-    cursor: pointer;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .42s ease, transform .42s ease;
+  cursor: pointer;
 }
 #projetos .card.fade-in {
-    opacity: 1;
-    transform: translateY(0);
+  opacity: 1;
+  transform: translateY(0);
 }
 .card:hover { transform: none !important; transition: none !important; }
 
 /* =====================
-   Hacker News widget (direito)
+   Widgets Hacker News & Curiosidades
 ===================== */
-.hn-container {
+.hn-container, #curiosidade-container {
   position: fixed;
   top: 140px;
-  right: 20px;
   width: 320px;
   max-height: 60vh;
   z-index: 30;
@@ -129,11 +130,28 @@ header {
   display: flex;
   flex-direction: column;
   transition: transform .22s ease, opacity .22s ease;
+  overflow: hidden;
 }
-.hn-container.collapsed .hn-content { display: none; opacity: 0; }
-.hn-header { display:flex; gap:8px; align-items:center; }
-.hn-header .hn-title { font-weight:600; color:var(--accent); }
-.hn-content { overflow-y: auto; padding-top:8px; }
+
+/* Posição: HN direita / Curiosidades esquerda */
+.hn-container { right: 20px; }
+#curiosidade-container { left: 20px; }
+
+/* Cabeçalho e conteúdo */
+.hn-header, #curiosidade-container .hn-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.hn-header .hn-title, #curiosidade-container .hn-title {
+  font-weight: 600;
+  color: var(--accent);
+  text-shadow: 0 0 5px var(--accent);
+}
+.hn-content, #curiosidade-container .hn-content {
+  overflow-y: auto;
+  padding-top: 8px;
+}
 .hn-list { list-style:none; padding-left:0; margin:0; }
 .hn-list li { padding:6px 4px; border-bottom: 1px solid rgba(0,255,0,0.06); }
 .hn-list li a { color: var(--neon); text-decoration: none; font-weight:600; display:block; }
@@ -141,63 +159,42 @@ header {
 .hn-loading { color: var(--neon); padding: 10px 4px; }
 .hn-footer { text-align:center; padding:6px 0; font-size: .75rem; color: rgba(0,255,0,0.6); }
 
-/* Widget Curiosidades estilo Hacker News */
-#curiosidade-container {
-  position: fixed;
-  top: 140px;
-  left: 20px;
-  width: 280px;
-  max-height: 60vh;
-  z-index: 30;
-  background: rgba(0,0,0,0.18);
-  border: 1px solid var(--neon);
-  border-radius: 10px;
-  padding: 8px;
-  color: var(--neon);
-  text-shadow: 0 0 3px var(--neon);
-  display: flex;
-  flex-direction: column;
-  transition: transform .22s ease, opacity .22s ease;
-}
-
-/* collapsed state */
+/* Collapsed state */
+.hn-container.collapsed .hn-content,
 #curiosidade-container.collapsed .hn-content { display: none; opacity: 0; }
-
-#curiosidade-container .hn-header {
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-#curiosidade-container .hn-title {
-  font-weight:600;
-  color: var(--accent);
-  text-shadow: 0 0 5px var(--accent);
-}
-
-#curiosidade-container .hn-content {
-  overflow-y: auto;
-  padding-top:8px;
-}
-
-#curiosidade-container .hn-footer {
-  text-align:center;
-  padding:6px 0;
-  font-size: .75rem;
-  color: rgba(0,255,0,0.6);
-}
-
 
 /* =====================
    Footer
 ===================== */
 footer {
-    position: relative;
-    z-index: 15;
-    background-color: rgba(0,0,0,0.14);
-    color: var(--neon);
-    text-align: center;
-    padding: 15px 10px;
-    backdrop-filter: blur(5px);
+  position: relative;
+  z-index: 15;
+  background-color: rgba(0,0,0,0.14);
+  color: var(--neon);
+  text-align: center;
+  padding: 15px 10px;
+  backdrop-filter: blur(5px);
 }
 main { padding-top: 160px; }
+
+/* =====================
+   Media Queries - Responsivo
+===================== */
+@media (max-width: 992px) {
+  /* Esconde widgets para tablet / mobile */
+  .hn-container, #curiosidade-container { display: none !important; }
+}
+
+@media (max-width: 576px) {
+  /* Curiosidade centralizada como modal opcional */
+  #curiosidade-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-height: 80%;
+    z-index: 50;
+  }
+  #curiosidade-container .hn-content { max-height: 70vh; }
+}
