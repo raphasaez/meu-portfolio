@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Supabase Config =====
   const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
   const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
   // Função para escapar HTML (evita XSS)
   function escapeHtml(str) {
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Carregar comentários =====
   async function carregarComentarios() {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from('comments')
         .select('*')
         .order('created_at', { ascending: false });
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!name || !comment) return alert('Preencha nome e comentário.');
 
     try {
-      const { error } = await supabase.from('comments').insert([{ name, comment }]);
+      const { error } = await supabaseClient.from('comments').insert([{ name, comment }]);
       if (error) throw error;
       commentForm.reset();
       carregarComentarios(); // Atualiza lista após envio
