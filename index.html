@@ -148,22 +148,76 @@
       </div>
     </section>
 
-    <!-- Contato -->
-    <section id="contato" class="container mb-4 aba" style="display:none;">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h3 class="card-title mb-3">Contato</h3>
-          <p class="mb-2">📩 <strong>Email:</strong> <a href="mailto:raphasaez_music@hotmail.com" target="_blank">raphasaez_music@hotmail.com</a></p>
-          <p class="mb-2">💻 <strong>GitHub:</strong> <a href="https://github.com/raphasaez" target="_blank">github.com/raphasaez</a></p>
-          <p class="mb-2">🔗 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/raphael-saez-0140aa272" target="_blank">linkedin.com/in/seuusuario</a></p>
-          <p class="mb-3">📄 <strong>Currículo:</strong> <a href="arquivos/curriculo.pdf" download>Download PDF</a></p>
-          <p style="font-size: 0.9rem; color: #0f0; text-shadow: 0 0 3px #0f0;">
-            Para formação e certificados oficiais, consulte o PDF do currículo.
-          </p>
+  <!-- Contato + Comentários -->
+<section id="contato" class="container mb-4 aba" style="display:none;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <!-- CONTATO -->
+      <h3 class="card-title mb-3">Contato</h3>
+
+      <p class="mb-2">📩 <strong>Email:</strong> 
+        <a href="mailto:raphasaez_music@hotmail.com" target="_blank">
+          raphasaez_music@hotmail.com
+        </a>
+      </p>
+
+      <p class="mb-2">💻 <strong>GitHub:</strong> 
+        <a href="https://github.com/raphasaez" target="_blank">
+          github.com/raphasaez
+        </a>
+      </p>
+
+      <p class="mb-2">🔗 <strong>LinkedIn:</strong> 
+        <a href="https://linkedin.com/in/raphael-saez-0140aa272" target="_blank">
+          linkedin.com/in/raphael-saez-0140aa272
+        </a>
+      </p>
+
+      <p class="mb-3">📄 <strong>Currículo:</strong> 
+        <a href="arquivos/curriculo.pdf" download>Download PDF</a>
+      </p>
+
+      <p style="font-size: 0.9rem; color: #0f0; text-shadow: 0 0 3px #0f0;">
+        Para formação e certificados oficiais, consulte o PDF do currículo.
+      </p>
+
+      <hr style="margin: 25px 0;">
+
+      <!-- FORMULÁRIO DE COMENTÁRIOS -->
+      <h3 class="card-title mb-3">Deixe um Comentário</h3>
+
+      <form action="https://api.staticforms.xyz/submit" method="POST">
+
+        <!-- SUA ACCESS KEY DO STATICFORMS -->
+        <input type="hidden" name="accessKey" value="sf_ed8n2ec9j36cf4mn1lhb8b21">
+
+        <!-- URL DO WEBHOOK SITE -->
+        <input type="hidden" name="redirectTo" value="https://webhook.site/6e110378-9f24-4c2d-9091-55d78a738737">
+
+        <div class="mb-3">
+          <label class="form-label text-light">Nome</label>
+          <input type="text" name="name" class="form-control" required>
         </div>
-      </div>
-    </section>
-  </main>
+
+        <div class="mb-3">
+          <label class="form-label text-light">Comentário</label>
+          <textarea name="comment" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Enviar</button>
+      </form>
+
+      <hr style="margin: 25px 0;">
+
+      <!-- LISTA DE COMENTÁRIOS -->
+      <h3 class="card-title mb-3">Comentários</h3>
+      <div id="comments" style="color: #fff;"></div>
+
+    </div>
+  </div>
+</section>
+</main>
 
   <!-- Hacker News floating widget -->
   <div id="hn-container" class="hn-container collapsed" aria-hidden="true">

@@ -253,3 +253,40 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarCuriosidade();
 
 }); // DOMContentLoaded
+// === CARREGAR COMENTÁRIOS DO JSONBIN ===
+
+const binId = "6920395e43b1c97be9bb7b3e";  // <-- seu BIN ID
+const apiKey = "$2a$10$ZsNW9BPU6IYlmp5jFafrduCCo.Q98./mOAg49Y7gW0ZvuR0zli6AO";  // <-- sua X-Master-Key
+
+fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+  headers: { "X-Master-Key": apiKey }
+})
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("comments");
+    const comments = data.record.comments;
+
+    if (!comments.length) {
+      container.innerHTML = "<p>Nenhum comentário ainda.</p>";
+      return;
+    }
+
+    comments.forEach(c => {
+      const div = document.createElement("div");
+      div.style.border = "1px solid #555";
+      div.style.padding = "10px";
+      div.style.margin = "10px 0";
+      div.style.borderRadius = "5px";
+
+      div.innerHTML = `
+        <strong>${c.name}</strong><br>
+        <p>${c.comment}</p>
+        <small style="opacity:0.7;">${new Date(c.date).toLocaleString()}</small>
+      `;
+
+      container.appendChild(div);
+    });
+  })
+  .catch(err => {
+    console.error("Erro ao carregar comentários:", err);
+  });
