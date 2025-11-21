@@ -6,17 +6,17 @@
   <title>Zeas - Cybersecurity Portfolio</title>
 
   <!-- CSP para segurança -->
- <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
-  style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
-  connect-src 'self' https://api.github.com https://hacker-news.firebaseio.com https://curiosidades-api.onrender.com;
-  img-src 'self' data:;
-  frame-src 'none';
-  object-src 'none';
-  base-uri 'self';
-  form-action 'self';
-">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+    style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+    connect-src 'self' https://api.github.com https://hacker-news.firebaseio.com https://curiosidades-api.onrender.com https://odgmhahvodehevdsrqwo.supabase.co;
+    img-src 'self' data:;
+    frame-src 'none';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+  ">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -42,7 +42,7 @@
   <header class="py-5 text-center text-white">
     <div class="container">
       <h1 class="display-5 fw-bold mb-1">zeassec</h1>
-      <p class="lead mb-0">Profissiona3232l de Cybersegurança</p>
+      <p class="lead mb-0">Profissional de Cybersegurança</p>
     </div>
   </header>
 
@@ -144,47 +144,46 @@
     <section id="projetos" class="container mb-4 aba" style="display:none;">
       <h3 class="mb-3">Projetos</h3>
       <div class="row g-3" id="lista-projetos">
-        <!-- Cards de projetos serão inseridos via JS -->
+        <p style="color:#f39c12;">Carregando projetos...</p>
       </div>
+    </section>
+
     <!-- Contato -->
-<section id="contato" class="container mb-4 aba" style="display:none;">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h3 class="card-title mb-3">Contato</h3>
-      <p class="mb-2">📩 <strong>Email:</strong> <a href="mailto:raphasaez_music@hotmail.com" target="_blank">raphasaez_music@hotmail.com</a></p>
-      <p class="mb-2">💻 <strong>GitHub:</strong> <a href="https://github.com/raphasaez" target="_blank">github.com/raphasaez</a></p>
-      <p class="mb-2">🔗 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/raphael-saez-0140aa272" target="_blank">linkedin.com/in/seuusuario</a></p>
-      <p class="mb-3">📄 <strong>Currículo:</strong> <a href="arquivos/curriculo.pdf" download>Download PDF</a></p>
-      <p style="font-size: 0.9rem; color: #0f0; text-shadow: 0 0 3px #0f0;">
-        Para formação e certificados oficiais, consulte o PDF do currículo.
-      </p>
-    </div>
-  </div>
-
-  <!-- SEÇÃO DE COMENTÁRIOS -->
-  <div class="card shadow-sm mt-4 p-3">
-    <h3 class="card-title mb-3">Deixe um Comentário</h3>
-
-    <form id="commentForm">
-      <div class="mb-3">
-        <label class="form-label text-dark">Nome</label>
-        <input type="text" id="name" class="form-control" required>
+    <section id="contato" class="container mb-4 aba" style="display:none;">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Contato</h3>
+          <p class="mb-2">📩 <strong>Email:</strong> <a href="mailto:raphasaez_music@hotmail.com" target="_blank">raphasaez_music@hotmail.com</a></p>
+          <p class="mb-2">💻 <strong>GitHub:</strong> <a href="https://github.com/raphasaez" target="_blank">github.com/raphasaez</a></p>
+          <p class="mb-2">🔗 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/raphael-saez-0140aa272" target="_blank">linkedin.com/in/seuusuario</a></p>
+          <p class="mb-3">📄 <strong>Currículo:</strong> <a href="arquivos/curriculo.pdf" download>Download PDF</a></p>
+          <p style="font-size: 0.9rem; color: #0f0; text-shadow: 0 0 3px #0f0;">
+            Para formação e certificados oficiais, consulte o PDF do currículo.
+          </p>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label text-dark">Comentário</label>
-        <textarea id="comment" class="form-control" rows="3" required></textarea>
+      <!-- SEÇÃO DE COMENTÁRIOS -->
+      <div class="card shadow-sm mt-4 p-3">
+        <h3 class="card-title mb-3">Deixe um Comentário</h3>
+        <form id="commentForm">
+          <div class="mb-3">
+            <label class="form-label text-dark">Nome</label>
+            <input type="text" id="name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-dark">Comentário</label>
+            <textarea id="comment" class="form-control" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Enviar</button>
+        </form>
+        <hr style="margin: 25px 0;">
+        <h4 class="text-dark">Comentários:</h4>
+        <div id="commentsList">
+          <p style="color:#f39c12;">Carregando comentários...</p>
+        </div>
       </div>
-
-      <button type="submit" class="btn btn-success w-100">Enviar</button>
-    </form>
-
-    <hr style="margin: 25px 0;">
-
-    <h4 class="text-dark">Comentários:</h4>
-    <div id="commentsList"></div>
-  </div>
-</section>
+    </section>
 
   </main>
 
