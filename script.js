@@ -1,4 +1,8 @@
-// script.js (versão reforçada)
+// ======= SUPABASE CONFIG =======
+const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
+const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- Seletores ---
   const abaLinks = document.querySelectorAll('.aba-link');
@@ -13,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let hnCarregado = false;
 
   // ========= Helpers de segurança =========
-  // Escapa HTML para texto seguro
   function escapeHtml(str){
     return String(str ?? '')
       .replaceAll('&','&amp;')
@@ -23,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .replaceAll("'",'&#39;');
   }
 
-  // Força href seguro: só http/https; senão, usa fallback
   function safeHref(url, fallback){
     try {
       const u = new URL(url);
@@ -34,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // fetch com timeout + checagem de status
   async function fetchJSON(url, { timeoutMs = 8000, ...opts } = {}){
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -87,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if(targetId==='sobre'){ animarHabilidades(); if(!hnCarregado) carregarNoticiasHN(); }
     if(targetId==='projetos'){ carregarProjetos(); }
+    if(targetId==='contato'){ carregarComentarios(); } // Carrega comentários ao abrir contato
     atualizarVideo(targetId);
   }
 
@@ -236,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const texto = typeof data?.curiosidade === 'string' ? data.curiosidade : 'Sem conteúdo.';
       curiosidadeText.style.opacity = 0;
       setTimeout(() => {
-        curiosidadeText.textContent = texto; // textContent evita XSS
+        curiosidadeText.textContent = texto;
         curiosidadeText.style.opacity = 1;
       }, 180);
     } catch (err) {
@@ -249,7 +251,53 @@ document.addEventListener('DOMContentLoaded', () => {
     proximaCuriosidade.addEventListener('click', carregarCuriosidade);
   }
 
-  // Carrega primeira curiosidade ao abrir a página
   carregarCuriosidade();
+
+  // ========= COMENTÁRIOS ABA CONTATO =========
+  const commentForm = document.getElementById('commentForm');
+  const commentsList = document.getElementById('commentsList');
+
+  async function carregarComentarios() {
+    if (!commentsList) return;
+    try {
+      const { data, error } = await supabase.from('comments').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+
+      commentsList.innerHTML = '';
+      data.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'comment mb-3';
+        div.innerHTML = `
+          <strong>${escapeHtml(c.name)}</strong><br>
+          <p>${escapeHtml(c.comment)}</p>
+          <small>${new Date(c.created_at).toLocaleString()}</small>
+          <hr>
+        `;
+        commentsList.appendChild(div);
+      });
+    } catch (err) {
+      console.error('Erro ao carregar comentários:', err);
+      commentsList.innerHTML = '<p style="color:#f39c12;">Erro ao carregar comentários.</p>';
+    }
+  }
+
+  if (commentForm) {
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const comment = document.getElementById('comment').value.trim();
+      if (!name || !comment) return alert('Preencha nome e comentário.');
+
+      try {
+        const { error } = await supabase.from('comments').insert([{ name, comment }]);
+        if (error) throw error;
+        commentForm.reset();
+        carregarComentarios();
+      } catch (err) {
+        console.error('Erro ao enviar comentário:', err);
+        alert('Erro ao enviar comentário.');
+      }
+    });
+  }
 
 }); // DOMContentLoaded
