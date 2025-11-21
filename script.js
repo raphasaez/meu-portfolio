@@ -254,39 +254,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 }); // DOMContentLoaded
 // === CARREGAR COMENTÁRIOS DO JSONBIN ===
+const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
+const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-const binId = "6920395e43b1c97be9bb7b3e";  // <-- seu BIN ID
-const apiKey = "$2a$10$ZsNW9BPU6IYlmp5jFafrduCCo.Q98./mOAg49Y7gW0ZvuR0zli6AO";  // <-- sua X-Master-Key
+// Enviar comentário
+async function enviarComentario(name, comment) {
+  const { error } = await supabase.from("comments").insert([
+    { name, comment }
+  ]);
 
-fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-  headers: { "X-Master-Key": apiKey }
-})
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("comments");
-    const comments = data.record.comments;
+  if (error) {
+    console.error(error);
+    alert("Erro ao enviar comentário.");
+  } else {
+    alert("Comentário enviado!");
+    carregarComentarios();
+  }
+}
 
-    if (!comments.length) {
-      container.innerHTML = "<p>Nenhum comentário ainda.</p>";
-      return;
-    }
+// Listar comentários
+async function carregarComentarios() {
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-    comments.forEach(c => {
-      const div = document.createElement("div");
-      div.style.border = "1px solid #555";
-      div.style.padding = "10px";
-      div.style.margin = "10px 0";
-      div.style.borderRadius = "5px";
+  if (error) return console.error(error);
 
-      div.innerHTML = `
+  const div = document.getElementById("listaComentarios");
+  div.innerHTML = "";
+
+  data.forEach(c => {
+    div.innerHTML += `
+      <div class="comment">
         <strong>${c.name}</strong><br>
         <p>${c.comment}</p>
-        <small style="opacity:0.7;">${new Date(c.date).toLocaleString()}</small>
-      `;
-
-      container.appendChild(div);
-    });
-  })
-  .catch(err => {
-    console.error("Erro ao carregar comentários:", err);
+        <small>${new Date(c.created_at).toLocaleString()}</small>
+        <hr>
+      </div>
+    `;
   });
+}
+
+carregarComentarios();
