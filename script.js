@@ -281,7 +281,7 @@ async function carregarComentarios() {
 
   if (error) return console.error(error);
 
-  const div = document.getElementById("listaComentarios"); // Certifique-se que o ID bate com o HTML
+  const div = document.getElementById("commentsList"); // Certifique-se que o ID bate com o HTML
   div.innerHTML = "";
 
   data.forEach(c => {
