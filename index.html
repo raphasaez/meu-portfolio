@@ -184,35 +184,28 @@
 
       <hr style="margin: 25px 0;">
 
-      <!-- FORMULÁRIO DE COMENTÁRIOS -->
-      <h3 class="card-title mb-3">Deixe um Comentário</h3>
+<!-- FORMULÁRIO DE COMENTÁRIOS -->
+<h3 class="card-title mb-3">Deixe um Comentário</h3>
 
-      <form action="https://api.staticforms.xyz/submit" method="POST">
+<form id="commentForm">
+  <div class="mb-3">
+    <label class="form-label text-light">Nome</label>
+    <input type="text" id="name" class="form-control" required>
+  </div>
 
-        <!-- SUA ACCESS KEY DO STATICFORMS -->
-        <input type="hidden" name="accessKey" value="sf_ed8n2ec9j36cf4mn1lhb8b21">
+  <div class="mb-3">
+    <label class="form-label text-light">Comentário</label>
+    <textarea id="comment" class="form-control" rows="3" required></textarea>
+  </div>
 
-        <!-- URL DO WEBHOOK SITE -->
-        <input type="hidden" name="redirectTo" value="https://webhook.site/6e110378-9f24-4c2d-9091-55d78a738737">
+  <button type="submit" class="btn btn-success w-100">Enviar</button>
+</form>
 
-        <div class="mb-3">
-          <label class="form-label text-light">Nome</label>
-          <input type="text" name="name" class="form-control" required>
-        </div>
+<hr style="margin: 25px 0;">
 
-        <div class="mb-3">
-          <label class="form-label text-light">Comentário</label>
-          <textarea name="comment" class="form-control" rows="3" required></textarea>
-        </div>
+<h4 class="text-light">Comentários:</h4>
+<div id="commentsList"></div>
 
-        <button type="submit" class="btn btn-success w-100">Enviar</button>
-      </form>
-
-      <hr style="margin: 25px 0;">
-
-      <!-- LISTA DE COMENTÁRIOS -->
-      <h3 class="card-title mb-3">Comentários</h3>
-      <div id="comments" style="color: #fff;"></div>
 
     </div>
   </div>
