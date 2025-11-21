@@ -252,58 +252,56 @@ document.addEventListener('DOMContentLoaded', () => {
   // Carrega primeira curiosidade ao abrir a página
   carregarCuriosidade();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
-  const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
+const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-  const form = document.getElementById("commentForm");
+const form = document.getElementById("commentForm");
 
-  // Enviar comentário
-  async function enviarComentario(name, comment) {
-    const { error } = await supabase.from("comments").insert([{ name, comment }]);
-    if (error) {
-      console.error(error);
-      alert("Erro ao enviar comentário.");
-    } else {
-      alert("Comentário enviado!");
-      carregarComentarios();
-    }
+// Enviar comentário
+async function enviarComentario(name, comment) {
+  const { error } = await supabase.from("comments").insert([{ name, comment }]);
+  if (error) {
+    console.error(error);
+    alert("Erro ao enviar comentário.");
+  } else {
+    alert("Comentário enviado!");
+    carregarComentarios();
   }
+}
 
-  // Listar comentários
-  async function carregarComentarios() {
-    const { data, error } = await supabase
-      .from("comments")
-      .select("*")
-      .order("created_at", { ascending: false });
+// Listar comentários
+async function carregarComentarios() {
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-    if (error) return console.error(error);
+  if (error) return console.error(error);
 
-    const div = document.getElementById("commentsList");
-    div.innerHTML = "";
+  const div = document.getElementById("commentsList");
+  div.innerHTML = "";
 
-    data.forEach(c => {
-      div.innerHTML += `
-        <div class="comment">
-          <strong>${c.name}</strong><br>
-          <p>${c.comment}</p>
-          <small>${new Date(c.created_at).toLocaleString()}</small>
-          <hr>
-        </div>
-      `;
-    });
-  }
-
-  // Capturar submit
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = document.getElementById("name").value;
-    const comment = document.getElementById("comment").value;
-    enviarComentario(name, comment);
-    form.reset();
+  data.forEach(c => {
+    div.innerHTML += `
+      <div class="comment">
+        <strong>${c.name}</strong><br>
+        <p>${c.comment}</p>
+        <small>${new Date(c.created_at).toLocaleString()}</small>
+        <hr>
+      </div>
+    `;
   });
+}
 
-  // Carregar comentários ao iniciar
-  carregarComentarios();
+// Capturar submit
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const comment = document.getElementById("comment").value;
+  enviarComentario(name, comment);
+  form.reset();
 });
+
+// Carregar comentários ao iniciar
+carregarComentarios();
