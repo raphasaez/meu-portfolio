@@ -252,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Carrega primeira curiosidade ao abrir a página
   carregarCuriosidade();
 
-}); // DOMContentLoaded
 const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
 const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
