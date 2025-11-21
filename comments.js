@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Supabase Config =====
   const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
   const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
-  const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
   // Função para escapar HTML (evita XSS)
   function escapeHtml(str) {
