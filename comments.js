@@ -1,4 +1,5 @@
 // comments.js
+console.log('comments.js carregado');
 document.addEventListener('DOMContentLoaded', () => {
   const commentForm = document.getElementById('commentForm');
   const commentsList = document.getElementById('commentsList');
