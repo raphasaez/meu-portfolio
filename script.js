@@ -253,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarCuriosidade();
 
 }); // DOMContentLoaded
-// === CARREGAR COMENTÁRIOS DO JSONBIN ===
 const supabaseUrl = "https://odgmhahvodehevdsrqwo.supabase.co";
 const supabaseKey = "sb_publishable_eXFAAb6o9q96r7FH57bgJA_Ft3u5_Ib";
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -282,7 +281,7 @@ async function carregarComentarios() {
 
   if (error) return console.error(error);
 
-  const div = document.getElementById("listaComentarios");
+  const div = document.getElementById("listaComentarios"); // Certifique-se que o ID bate com o HTML
   div.innerHTML = "";
 
   data.forEach(c => {
@@ -297,4 +296,17 @@ async function carregarComentarios() {
   });
 }
 
+// Capturar submit do formulário
+const form = document.getElementById("commentForm");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const comment = document.getElementById("comment").value;
+  enviarComentario(name, comment);
+  form.reset();
+});
+
+// Carregar comentários ao iniciar a página
 carregarComentarios();
+
